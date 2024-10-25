@@ -1,15 +1,15 @@
 const express = require("express")
-const server = express()
-const alunos = require("./src/teste.json")
 
-server.get("/ah", (req, res) => {
-    return res.json ({mensagem: "Hello NODE"})
-})
+const app = express()
 
-server.get("/alunos", (req, res) => {
-    return res.json(alunos)
-})
+app.get("/", function (req, res) {
+    res.send("Hello World");
+  });
 
-server.listen(3300, () => {
+app.get("/aluno/:nome/:dataNascimento/:matricula/:curso", function (req, res) {
+    res.send(req.params);
+});
+
+app.listen(3031, () => {
     console.log("server ON")
 })
