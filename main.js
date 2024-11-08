@@ -35,7 +35,7 @@ rotas.get("/", function (req, res) {
     res.send("Rota principal");
 });
 
-rotas.get("/salvar/:nome/:dataNascimento/:matricula/:curso", async function (req, res) {
+rotas.get("/cadastrar/:nome/:dataNascimento/:matricula/:curso", async function (req, res) {
     const { nome, dataNascimento, matricula, curso } = req.params;
 
     const novoAluno = await Aluno.create({ nome, dataNascimento, matricula, curso });
@@ -46,7 +46,7 @@ rotas.get("/salvar/:nome/:dataNascimento/:matricula/:curso", async function (req
     });
 });
 
-rotas.get("/deletar/:id", async function (req, res) {
+rotas.get("/apagar/:id", async function (req, res) {
     const { id } = req.params;
     const idNumber = parseInt(id, 10);
   
@@ -78,13 +78,13 @@ rotas.get("/editar/:id/:nome/:dataNascimento/:matricula/:curso", async function 
 });
 
 // Exibir todos os alunos em HTML
-rotas.get("/mostrar", async function (req, res) {
-    try {
-        const alunos = await Aluno.findAll();
-        res.render("alunos", { alunos }); // Renderiza o template EJS
-    } catch (error) {
-        res.status(500).json({ message: `Erro ao buscar alunos: ${error}` });
-    }
+rotas.get("/exibir", async function (req, res) {
+  try {
+    const alunos = await Aluno.findAll(); // Busca todos os registros
+    res.json(alunos); // Retorna os registros em formato JSON
+} catch (error) {
+    res.status(500).json({ message: `Erro ao buscar alunos: ${error}` }); // Retorna erro ao cliente
+}
 });
 
 //###Servidor###
