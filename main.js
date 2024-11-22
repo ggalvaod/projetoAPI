@@ -36,15 +36,32 @@ rotas.get("/", function (req, res) {
 });
 
 rotas.get("/cadastrar/:nome/:dataNascimento/:matricula/:curso", async function (req, res) {
-    const { nome, dataNascimento, matricula, curso } = req.params;
+  try {
+      const { nome, dataNascimento, matricula, curso } = req.params;
 
-    const novoAluno = await Aluno.create({ nome, dataNascimento, matricula, curso });
-  
-    res.json({
-      resposta: "Aluno criado com sucesso",
-      aluno: novoAluno,
-    });
+      // Converte a data para um formato adequado (exemplo: yyyy-mm-dd)
+      const dataFormatada = new Date(dataNascimento);
+
+      if (isNaN(dataFormatada)) {
+          return res.status(400).json({ resposta: "Data de nascimento inválida" });
+      }
+
+      const novoAluno = await Aluno.create({
+          nome,
+          dataNascimento: dataFormatada,
+          matricula,
+          curso,
+      });
+
+      res.status(200).json({
+          resposta: "Aluno criado com sucesso",
+          aluno: novoAluno,
+      });
+  } catch (error) {
+      res.status(500).json({ resposta: "Erro ao criar aluno", error: error.message });
+  }
 });
+
 
 rotas.get("/apagar/:id", async function (req, res) {
     const { id } = req.params;
