@@ -101,6 +101,17 @@ app.get("/apagar/:id", async function (req, res) {
   }
 });
 
+// Rota para listar todos os alunos
+app.get("/listar", async function (req, res) {
+  try {
+      const alunos = await Aluno.findAll();
+      res.json(alunos);
+  } catch (error) {
+      res.status(500).json({ mensagem: `Erro ao listar alunos: ${error.message}` });
+  }
+});
+
+
 // Inicia o servidor na porta 3031
 app.listen(3031, function () {
   console.log("Servidor rodando na porta 3031");
